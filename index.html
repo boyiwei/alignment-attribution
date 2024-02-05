@@ -313,40 +313,36 @@
       <h2 class="title is-3", id="Method">Methods: Isolating Safety-Critical and Utility-Critical Regions from Two Perspectives</h2>
       <div class="content has-text-justified">
         <p>
-          <h3>Safety-Critical Region and Utility-Critical Region are <span style="color: red;">Highly</span> Entangled</h3>
-          On neuron level, we compute the importance score for each neuron using Wanda (<a href="https://arxiv.org/pdf/2306.11695.pdf">Sun et al.</a>) and SNIP (<a href="https://arxiv.org/pdf/1810.02340.pdf">Lee et al.</a>) on the safety dataset and the utility dataset. Then compute the jaccard index \(J=|A\cup B|/|A\cap B|\) between top-p% scored utility neurons and top-p% scored safety neurons. 
+          <h4>Safety-Critical Region and Utility-Critical Region are <span style="color: red;">Highly</span> Entangled</h4>
+          On neuron level, we compute the importance score for each neuron using Wanda (<a href="https://arxiv.org/pdf/2306.11695.pdf">Sun et al.</a>) and SNIP (<a href="https://arxiv.org/pdf/1810.02340.pdf">Lee et al.</a>) on the safety dataset and the utility dataset. Then compute the jaccard index \(J=|A\cup B|/|A\cap B|\) between top-\(p\%\) scored utility neurons and top-\(p\%\) scored safety neurons. 
           On Rank level, we perform SVD on the safety outputs and the utility outputs to approximate the weight matrix in low rank space (termed as ActSVD): \(U S V^\top  \approx WX_{\mathrm{in}},\   
-          \widehat{W} = UU^\top W\). We compute the similarity between utility matrix \(U^u\) and safety matrix \(U^s\) defined in Section 4.3. We find that even when top-p% is only 5% and the rank of \(U^u\) and \(U^s\) is 100 out of 4096, the overlapping between safety-critical region and utitliy-critical region is still pretty high, as shown in the figure below.
-          <img src="./static/images/jaccard_index_wandg_0.01_barplot.png" alt="neuron_result">
+          \widehat{W} = UU^\top W\). We compute the similarity between utility matrix \(U^u\) and safety matrix \(U^s\) defined in Section 4.3. We find that even when top-\(p\%\) is only 5% and the rank of \(U^u\) and \(U^s\) is 100 out of 4096, the overlapping between safety-critical region and utitliy-critical region is still pretty high, as shown in the figures below.
 
-          <img src="./static/images/subspace_similarity_100.png" alt="rank_result">
+          <figure>
+            <img src="./static/images/jaccard_index_wandg_0.01_barplot.png" alt="neuron_result">
+            <figcaption>(a) Neuron Level</figcaption>
+            <img src="./static/images/subspace_similarity_100.png" alt="rank_result">
+            <figcaption>(b) Rank Level</figcaption>
+          </figure>
 
-          <h3>Isolating Safety-Critical-Only Region From Utility-Critical Region</h3>
+
+          <h4>Isolating Safety-Critical-Only Region From Utility-Critical Region</h4>
           We propose two way of isolating safety-critical region from utility-critical region:
           <ul>
-            <li>On neuron level, we compute the importance score for each neuron using Wanda and SNIP on the safety dataset and the utility dataset. Then we isolate the safety-critical neurons from the utility neurons using set difference between top-p%-scored utility neurons and top-q%-scored safety neurons: \(S(p,q) =  S^s(q) - S^u(p)\)</li>
+            <li>On neuron level, we compute the importance score for each neuron using Wanda and SNIP on the safety dataset and the utility dataset. Then we isolate the safety-critical neurons from the utility neurons using set difference between top-\(p\%\)-scored utility neurons and top-\(q\%\)-scored safety neurons: \(S(p,q) =  S^s(q) - S^u(p)\)</li>
             <li>On rank level, we use ActSVD to comptute the low-rank projetion matrix \(\Pi=UU^\top\) for both safety and utility. Then we remove the matrix \(\Delta W(r^u, r^s) = (I-\Pi^u)  \Pi^s  W\), which essentially removes the important ranks of the safety behavior that are <b>orthogonal</b> to the important ranks of the utility behavior. </li>
           </ul>
-          <h3>Removing the Isolated Safety-Critical Region will Totally Destroy the Model's Safety while Presering its Utility</h3>
+          <h4>Safety-Critical-Only Region is <span style="color: red;">Sparse</span>. Removing the Isolated Safety-Critical-Only Region will Totally Destroy the Model's Safety while Presering its Utility</h4>
 
-          <img src="./static/images/ASR_vs_acc_7b.png" alt="neuron_result">
+          <figure>
+            <img src="./static/images/ASR_vs_acc_7b.png" alt="neuron_result">
+            <figcaption>(a) Neuron Level</figcaption>
+            <img src="./static/images/low_rank_diff_7b.png" alt="rank_result">
+            <figcaption>(b) Rank Level</figcaption>
 
-          <img src="./static/images/low_rank_diff_7b.png" alt="rank_result">
-
-
-          The figure above shows ASR and accuracy after removing safety-critical regions in LLaMA2-7B-chat-hf identified by: <b>(a).</b> Difference pruning methods in neuron level with <b>sparsity constraint 3%</b>. 
-          <b>(b).</b> Different methods in low rank modifications with <b>ranks of the weight updates \(\mathrm{rank} (\Delta W)\)  less than 100</b> (out of 4096). Among all methods, disentangling safety from utility (set difference for neurons and orthogonal projection for ranks) mostly effectively identify the safety-critical regions, with safety severely compromised while utility retains.
+          The figures above show ASR and accuracy after removing safety-critical regions in LLaMA2-7B-chat-hf identified by: <b>(a).</b> Difference pruning methods in neuron level with <b><span style="color: red;">constraint 3%</span></b>. 
+          <b>(b).</b> Different methods in low rank modifications with <b><span style="color: red;">rank of the weight updates \(\mathrm{rank} (\Delta W)\) less than 100 (out of 4096)</span></b>. Among all methods, disentangling safety from utility (set difference for neurons and orthogonal projection for ranks) mostly effectively identify the safety-critical regions, with safety severely compromised while utility retains.
           
-          <p>  However, we notice that <span style="color: darkorange;"><b>open-source LLMs are usually evaluated for alignment using only default generation methods</b></span>. 
-          
-          For instance, <a href="https://arxiv.org/pdf/2307.09288.pdf">Touvron et al.</a> conducts extensive alignment evaluations of LLaMA2 and reports very low violation rates for LLaMA2-chat models (<5%, see their Figure 19), using the following fixed generation approach: 
-          <!-- top-p sampling with p=0.9 and temperature=0.1 and always prepending a system prompt (a guideline intentionally prepended to steer model generation):  -->
-          <ul>
-            <li>In Section 4.1: <i>"For decoding, we set temperature to 0.1 and use nucleus sampling with top-p set to 0.9"</i>;</li>
-            <li>In Appendix A.3.7: <i>"While collecting generations, we append a system prompt prior to the prompt for evaluation"</i>. (The system prompt is a guideline intentionally prepended to steer LLMs towards helpful and harmless generation.)</li>
-          </ul>
-
-          <p> While pragmatic, this approach risks missing cases where the model's alignment substantially deteriorates with other generation strategies, which motivates our generation exploitation attack. 
       </div>
     </div>
   </div>
@@ -356,72 +352,20 @@
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container is-max-desktop is-centered has-text-centered">
-      <h2 class="title is-3", id="attack">An Extremely Simple & Effective Generation Exploitation Attack</h2>
-      <span style="color: purple;">(Our attack costs < 1 minute per example, on a single A100 GPU.)</span>
-      
+      <h2 class="title is-3", id="attack">Freezing Safety-Critical Neurons Does Not Stop Fine-Tuning Attacks</h2>
       <div class="content has-text-justified">
-        <br>
         <p>
-          Our generation exploitation attack explores various generation strategies, primarily centered around the system prompt and decoding strategies. Regarding the system prompt, we consider either 1) prepending it before the user instruction, or 2) <b> not including it</b>. In terms of decoding strategies, we experiment with the <b>temperature sampling, top-p sampling and top-k sampling with different hyper-parameters</b>. 
-        </p>  
-          
-        <p> In addition to existing benchmarks, we also introduce the <a href="https://github.com/Princeton-SysML/Jailbreak_LLM/blob/main/data/MaliciousInstruct.txt">MaliciousInstruct dataset</a>, which contains 100 malicious instructions of 10 different malicious intents for evaluation. We evaluate on 11 models: <a href="https://lmsys.org/blog/2023-03-30-vicuna/">Vicuna</a> (7B, 13B, and 33B), <a href="https://www.mosaicml.com/blog/mpt-7b">MPT</a> (7B and 30B), <a href="https://falconllm.tii.ae/">Falcon</a> (7B and 40B), and <a href="https://ai.meta.com/llama/">LLaMA2</a> (7B, 13B, 7B-chat, and 13B-chat). Note that among all the models, only LLaMA2-7B-chat and LLaMA2-13B-chat have been explicitly noted to have undergone safety alignment. For these two models, we sample 8 times for each decoding variant to further enhance the attack performance.
-        </p>
+          We explore whether the identified safety-critical neurons could mitigate the fine-tuning attack.
+          Following <a href="https://arxiv.org/pdf/2310.03693.pdf">Qi et al.</a>'s experimental setup, we fine-tune LLaMA2-7B-chat-hf with varying numbers of examples \(n\) from the Alpaca dataset. During fine-tuning, we freeze the top-\(q\%\) of safety neurons and observe their effect on preserving safety. 
+          We find that effective counteraction of the attack occurs only with \(n=10\) and freezing over 50% of neurons.  
+          This observation aligns with <a href="https://arxiv.org/pdf/2401.01967.pdf">Lee et al.</a>'s hypothesis that fine-tuning attacks may create alternative pathways in the original model. 
+          Given that safety-critical neurons are sparse, these new routes could bypass the existing safety mechanisms easily, and therefore we need more robust defenses against fine-tuning attacks.
+        </p> 
 
-        <div class="container is-max-desktop">
-          <div>
-      
-            <img src="./static/images/result.png" alt="teaser">
-                  
-
-                  
-            
-          </div>
-        </div>
-
-        <p>As shown, we are able to boost the attack success rate for 11 models to >95% with our generation exploitation attack. <span style="color: red;">Alarmingly, for models that have undergone safety alignment (marked with "♠"), <b>a simple exploitation of generation variants increases the risk from 0% to 95%!     </b></span>  Human evaluation further shows that among the misaligned output, more than 50% of them provide harmful instructions.</p>
-        
-        <p>Moreover, our generation exploitation attack consistently strikes higher success rates than the SOTA attack by <a href="https://llm-attacks.org/">Zou et al. </a>,
-          while its compute time is an order-of-magnitude less (around 30x).</p>
-
-        <p> Here are 10 examples for our attack on the LLaMA2-7B-chat model, each for a distinct malicious intent. <label for="select-data">You can select the type of malicious intent from the dropdown list:</label> 
-    <select id="select-data"; style="padding: 2px; background:#b19cd7; border:none; color:white; font-weight:400">
-        <option value="data1">Psychological manipulation</option>
-        <option value="data2">Sabotage</option>
-        <option value="data3">Theft</option>
-        <option value="data4">Defamation</option>
-        <option value="data5">Cyberbullying</option>
-        <option value="data6">False accusation</option>
-        <option value="data7">Tax fraud</option>
-        <option value="data8">Hacking</option>
-        <option value="data9">Fraud</option>
-        <option value="data10">Illegal drug use</option>
-    </select>
-    <b>Please note that these responses do contain content that may be harmful.</b>
-
-    <table id="data-table">
-        <thead>
-            <tr>
-              <th>Category</th>
-              <th>Malicious Instruction</th>
-              <th><span style="color: green">Default Generation</span> <br>(top-p=0.9, temperature=0.1)</th>
-              <th><span style="color: red">Exploited Generation</span> <br>(our attack)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Table content will be dynamically generated here -->
-        </tbody>
-    </table>
-
-
-
-
-        <!-- </p> -->
       </div>
     </div>
   </div>
 </section>
-
 
 
 <section class="hero is-small">
@@ -430,7 +374,6 @@
       <h2 class="title is-3", id="defense">A Proactive Defense Method</h2>
       
       <div class="content has-text-justified">
-        <br>
         <p>
           This catastrophic failure of alignment motivates us to design a more effective model alignment approach. Specifically, we propose a new alignment strategy named <span style="color:green"><b>generation-aware alignment</b></span>, which proactively aligns models with outputs generated under various generation configurations  (refer to Section 5 of our paper for more details). We show that this strategy can defend the generation exploitation attack reasonably, reducing the attack success rate from 95% to 69% for the LLaMA2-7B-chat model.
 
@@ -451,7 +394,8 @@
         <p>
           We acknowledge that this study contains information that has the potential to enable users to generate harmful content using certain open-source LLMs. Despite the risks involved, we believe it to be necessary to disclose this research in full, as our study highlights a significant and potentially CATASTROPHIC shortcoming in the current safety evaluation and alignment procedures for open-source LLMs. Consequently, we strongly advocate the adoption of a more comprehensive red-teaming approach, to comprehensively evaluate model risks across a spectrum of generation strategies. Furthermore, we recommend implementing our generation-aware alignment approach prior to the model release as a proactive countermeasure.
           <p>
-            This project is supported by an NSF CAREER award, a Sloan Research Fellowship, a Meta research grant, and a Princeton SEAS Innovation Grant. We would like to extend our sincere appreciation to <a href="https://zwcolin.github.io/">Zirui Wang</a>, <a href="https://howard-yen.github.io/">Howard Yen</a>, and <a href="hhttps://ahjwang.github.io/">Austin Wang</a> for their help in the human evaluation study.  
+            We express our gratitude to Chiyuan Zhang, Vikash Sehwag, Yi Zeng, Ruoxi Jia, Lucy He, and Kaifeng Lyu for providing helpful feedback on this project. Boyi Wei is supported by 	
+            the Francis Robbins Upton Fellowship. Kaixuan Huang is supported by \revise{xxx}. Yangsibo Huang is supported by the Wallace Memorial Fellowship. This research was supported by the Center for AI Safety Compute Cluster. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the sponsors. 
       </div>
     </div>
   </div>
