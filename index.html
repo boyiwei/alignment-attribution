@@ -339,6 +339,7 @@
             <figcaption>(a) Neuron Level</figcaption>
             <img src="./static/images/low_rank_diff_7b.png" alt="rank_result">
             <figcaption>(b) Rank Level</figcaption>
+          </figure>
 
           The figures above show ASR and accuracy after removing safety-critical regions in LLaMA2-7B-chat-hf identified by: <b>(a).</b> Difference pruning methods in neuron level with <b><span style="color: red;">constraint 3%</span></b>. 
           <b>(b).</b> Different methods in low rank modifications with <b><span style="color: red;">rank of the weight updates \(\mathrm{rank} (\Delta W)\) less than 100 (out of 4096)</span></b>. Among all methods, disentangling safety from utility (set difference for neurons and orthogonal projection for ranks) mostly effectively identify the safety-critical regions, with safety severely compromised while utility retains.
@@ -367,22 +368,6 @@
   </div>
 </section>
 
-
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container is-max-desktop is-centered has-text-centered">
-      <h2 class="title is-3", id="defense">A Proactive Defense Method</h2>
-      
-      <div class="content has-text-justified">
-        <p>
-          This catastrophic failure of alignment motivates us to design a more effective model alignment approach. Specifically, we propose a new alignment strategy named <span style="color:green"><b>generation-aware alignment</b></span>, which proactively aligns models with outputs generated under various generation configurations  (refer to Section 5 of our paper for more details). We show that this strategy can defend the generation exploitation attack reasonably, reducing the attack success rate from 95% to 69% for the LLaMA2-7B-chat model.
-
-
-        <!-- </p> -->
-      </div>
-    </div>
-  </div>
-</section>
 
 
 <section class="hero is-small">
