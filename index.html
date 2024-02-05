@@ -316,8 +316,11 @@
           <h3>Safety-Critical Region and Utility-Critical Region are <span style="color: red;">Highly</span> Entangled</h3>
           On neuron level, we compute the importance score for each neuron using Wanda (<a href="https://arxiv.org/pdf/2306.11695.pdf">Sun et al.</a>) and SNIP (<a href="https://arxiv.org/pdf/1810.02340.pdf">Lee et al.</a>) on the safety dataset and the utility dataset. Then compute the jaccard index \(J=|A\cup B|/|A\cap B|\) between top-p% scored utility neurons and top-p% scored safety neurons. 
           On Rank level, we perform SVD on the safety outputs and the utility outputs to approximate the weight matrix in low rank space (termed as ActSVD): \(U S V^\top  \approx WX_{\mathrm{in}},\   
-          \widehat{W} = UU^\top W\). We compute the similarity between utility matrix \(U^u\) and safety matrix \(U^s\) defined in Section 4.3. We find that even when top-p% is only 5% and the rank of \(U^u\) and \(U^s\) is 100 out of 4096, the overlapping between safety-critical region and utitliy-critical region is still pretty high.
-          
+          \widehat{W} = UU^\top W\). We compute the similarity between utility matrix \(U^u\) and safety matrix \(U^s\) defined in Section 4.3. We find that even when top-p% is only 5% and the rank of \(U^u\) and \(U^s\) is 100 out of 4096, the overlapping between safety-critical region and utitliy-critical region is still pretty high, as shown in the figure below.
+          <img src="./static/images/jaccard_index_wandg_0.01_barplot.png" alt="neuron_result">
+
+          <img src="./static/images/subspace_similarity_100.png" alt="rank_result">
+
           <h3>Isolating Safety-Critical-Only Region From Utility-Critical Region</h3>
           We propose two way of isolating safety-critical region from utility-critical region:
           <ul>
@@ -329,6 +332,10 @@
           <img src="./static/images/ASR_vs_acc_7b.png" alt="neuron_result">
 
           <img src="./static/images/low_rank_diff_7b.png" alt="rank_result">
+
+
+          The figure above shows ASR and accuracy after removing safety-critical regions in LLaMA2-7B-chat-hf identified by: <b>(a).</b> Difference pruning methods in neuron level with <b>sparsity constraint 3%</b>. 
+          <b>(b).</b> Different methods in low rank modifications with <b>ranks of the weight updates \(\mathrm{rank} (\Delta W)\)  less than 100</b> (out of 4096). Among all methods, disentangling safety from utility (set difference for neurons and orthogonal projection for ranks) mostly effectively identify the safety-critical regions, with safety severely compromised while utility retains.
           
           <p>  However, we notice that <span style="color: darkorange;"><b>open-source LLMs are usually evaluated for alignment using only default generation methods</b></span>. 
           
