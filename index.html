@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <meta charset="utf-8">
   <meta name="description"
         content="Assessing the Brittleness of Safety Alignment via Pruning and Low-Rank Modifications">
@@ -298,11 +300,8 @@
     <!-- <section class="hero teaser"> -->
       <div class="container is-max-desktop">
         <div class="hero-body">
-          <img src="./static/images/main.png" alt="teaser">
-                Responses to a malicious instruction by <a href="https://huggingface.co/meta-llama/Llama-2-7b-chat-hf">LLaMA2-7B-chat</a> under different
-                generation configurations. In this example, we simply changed p from 0.9 (default) to 0.75 in top-p
-                sampling, which successfully bypasses the safety constraint.        
-          
+          <img src="./static/images/main.png" alt="pipeline">
+          The proposed pipelines for identifying and isolating safety-critical regions of LLM weights at (a) neuron level and (b) rank level. <b>(a).</b> We identify the top safety neurons and the top utility neurons by computing per-neuron importance scores on the safety dataset and the utility dataset. Next, we isolate the safety-critical neurons from the utility neurons using set difference.  <b>(b).</b> We identify the top safety ranks and the top utility ranks by performing SVD on the safety outputs and the utility outputs (termed ActSVD). Next, we isolate the safety-critical ranks using orthogonal projection.     
         </div>
       </div>
     <!-- </section> -->
@@ -311,11 +310,17 @@
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container is-max-desktop is-centered has-text-centered">
-      <h2 class="title is-3", id="motivation">Motivation: Fixed Generation Configuration for Safety Evaluation in LLM</h2>
+      <h2 class="title is-3", id="Method">Methods: Isolating Safety-Critical and Utility-Critical Regions from Two Perspectives</h2>
       <div class="content has-text-justified">
         <p>
-          Decoding strategies are how language models choose what words they should output once they know the probabilities. Greedy decoding selects the most probable token, while sampling-based decoding randomly selects the next word using a temperature parameter-controlled probability distribution. Variants of sampling-based decoding include <a href="https://arxiv.org/pdf/1904.09751.pdf">top-p sampling</a> and <a href="https://arxiv.org/pdf/1805.04833.pdf">top-k sampling</a>, which restrict the sampling to the most probable tokens. 
-
+          <h3>Safety-Critical Region and Utility-Critical Region are <span style="color: red;">Highly</span> Entangled</h3>
+          On neuron level, we compute the importance score for each neuron using Wanda (<a href="https://arxiv.org/pdf/2306.11695.pdf">Sun et al.</a>) and SNIP (<a href="https://arxiv.org/pdf/1810.02340.pdf">Lee et al.</a>) on the safety dataset and the utility dataset. Then compute the jaccard index \(J=|A\cup B|/|A\cap B|\) between top-p% scored utility neurons and top-p% scored safety neurons. 
+          On Rank level, we perform SVD on the safety outputs and the utility outputs to approximate the weight matrix in low rank space: \(U S V^\top  \approx WX_{\mathrm{in}},\   
+          \widehat{W} = UU^\top W\). We compute the similarity between utility matrix \(U^u\) and safety matrix \(U^s\) defined in Section 4.3. We find that even when top-p% is only 5% and the rank of \(U^u\) and \(U^s\) is 100, the overlapping between safety-critical region and utitliy-critical region is still pretty high.
+          
+          <h3>Isolating Safety-Critical-Only Region From Utility-Critical Region</h3>
+          <h3>Removing the Isolated Safety-Critical Region will Totally Destroy the Model's Safety while Presering its Utility</h3>
+          We propose two methods to identify and isolate safety-critical and utility-critical regions from two perspectives: neuron level and rank level.
           
           <p>  However, we notice that <span style="color: darkorange;"><b>open-source LLMs are usually evaluated for alignment using only default generation methods</b></span>. 
           
