@@ -316,7 +316,9 @@
           \widehat{W} = UU^\top W\). We compute the similarity between utility matrix \(U^u\) and safety matrix \(U^s\) defined in Section 4.3. We find that even when top-\(p\%\) is only 5% and the rank of \(U^u\) and \(U^s\) is 100 out of 4096, the overlapping between safety-critical region and utitliy-critical region is still pretty high, as shown in the figures below.
 
           <figure>
-            <img src="./static/images/jaccard_index_wandg_0.01_barplot.png" alt="neuron_result">
+            <!-- <img src="./static/images/jaccard_index_wandg_0.01_barplot.png" alt="neuron_result">
+             -->
+            <iframe src="./static/images/jaccard_index_wandg_0.05_barplot.html" width="100%" height="600"></iframe>
             <figcaption>(a) Neuron Level</figcaption>
             <img src="./static/images/subspace_similarity_100.png" alt="rank_result">
             <figcaption>(b) Rank Level</figcaption>
@@ -377,7 +379,7 @@
           We acknowledge that this study contains information that has the potential to enable users to generate harmful content using certain open-source LLMs. Despite the risks involved, we believe it to be necessary to disclose this research in full, as our study highlights a significant and potentially CATASTROPHIC shortcoming in the current safety evaluation and alignment procedures for open-source LLMs. Consequently, we strongly advocate the adoption of a more comprehensive red-teaming approach, to comprehensively evaluate model risks across a spectrum of generation strategies. Furthermore, we recommend implementing our generation-aware alignment approach prior to the model release as a proactive countermeasure.
           <p>
             We express our gratitude to Chiyuan Zhang, Vikash Sehwag, Yi Zeng, Ruoxi Jia, Lucy He, and Kaifeng Lyu for providing helpful feedback on this project. Boyi Wei is supported by 	
-            the Francis Robbins Upton Fellowship. Kaixuan Huang is supported by \revise{xxx}. Yangsibo Huang is supported by the Wallace Memorial Fellowship. This research was supported by the Center for AI Safety Compute Cluster. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the sponsors. 
+            the Francis Robbins Upton Fellowship. Yangsibo Huang is supported by the Wallace Memorial Fellowship. This research was supported by the Center for AI Safety Compute Cluster. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the sponsors. 
       </div>
     </div>
   </div>
@@ -390,12 +392,7 @@
     <h2 class="title", id="reference">BibTeX</h2>
     <p>If you find our code and paper helpful, please consider citing our work:
     </p>
-    <pre><code>@article{huang2023catastrophic,
-      title={Catastrophic Jailbreak of Open-source LLMs via Exploiting Generation},
-      author={Huang, Yangsibo and Gupta, Samyak and Xia, Mengzhou and Li, Kai and Chen, Danqi},
-      journal={arXiv preprint arXiv:2310.06987},
-      year={2023}
-    }
+    <pre><code>
 </code></pre>
   </div>
 </section>
