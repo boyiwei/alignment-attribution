@@ -314,7 +314,7 @@
           On neuron level, we compute the importance score for each neuron using Wanda (<a href="https://arxiv.org/pdf/2306.11695.pdf">Sun et al.</a>) and SNIP (<a href="https://arxiv.org/pdf/1810.02340.pdf">Lee et al.</a>) on the safety dataset and the utility dataset. Then compute the jaccard index \(J=|A\cup B|/|A\cap B|\) between top-\(p\%\) scored utility neurons and top-\(p\%\) scored safety neurons. 
           On Rank level, we perform SVD on the safety outputs and the utility outputs to approximate the weight matrix in low rank space (termed as ActSVD): \(U S V^\top  \approx WX_{\mathrm{in}},\   
           \widehat{W} = UU^\top W\). We compute the similarity between utility matrix \(U^u\) and safety matrix \(U^s\) defined in Section 4.3. We find that even when top-\(p\%\) is only 5% and the rank of \(U^u\) and \(U^s\) is 100 out of 4096, the overlapping between safety-critical region and utitliy-critical region is still pretty high, as shown in the figures below.
-          <div style="width: 600px; margin: auto;">
+          <div style="width: 1200px; margin: auto;">
             <figure>
             <!-- <img src="./static/images/jaccard_index_wandg_0.01_barplot.png" alt="neuron_result">
              -->
