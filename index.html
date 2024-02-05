@@ -287,7 +287,7 @@
           <ul>
             <li><span style="color: green;"><b>We develop methods to identify critical regions that are vital for safety guardrails</b></span>, and that are disentangled from utility-relevant regions at both the neuron and rank levels.</li>
             <li>Surprisingly, the isolated regions we find are sparse, comprising about <span style="color: rgb(255, 0, 0);"><b>3% at the parameter level</b></span> and <span style="color: rgb(255, 0, 0);"><b>2.5% at the rank level</b></span>. Removing these regions compromises safety without significantly impacting utility, corroborating the inherent brittleness of the model's safety mechanisms.</li>
-            <li>We show that <span style="color:blue"><b>remain vulnerable to low-cost fine-tuning attacks even when modifications to the safety-critical regions are restricted</b></span> . These findings underscore the urgent need for more robust safety strategies in LLMs.</li>
+            <li>We show that the model <span style="color:blue"><b>remains vulnerable to low-cost fine-tuning attacks even when modifications to the safety-critical regions are restricted</b></span> . These findings underscore the urgent need for more robust safety strategies in LLMs.</li>
 
           </ul>
            
@@ -316,16 +316,19 @@
           <h3>Safety-Critical Region and Utility-Critical Region are <span style="color: red;">Highly</span> Entangled</h3>
           On neuron level, we compute the importance score for each neuron using Wanda (<a href="https://arxiv.org/pdf/2306.11695.pdf">Sun et al.</a>) and SNIP (<a href="https://arxiv.org/pdf/1810.02340.pdf">Lee et al.</a>) on the safety dataset and the utility dataset. Then compute the jaccard index \(J=|A\cup B|/|A\cap B|\) between top-p% scored utility neurons and top-p% scored safety neurons. 
           On Rank level, we perform SVD on the safety outputs and the utility outputs to approximate the weight matrix in low rank space (termed as ActSVD): \(U S V^\top  \approx WX_{\mathrm{in}},\   
-          \widehat{W} = UU^\top W\). We compute the similarity between utility matrix \(U^u\) and safety matrix \(U^s\) defined in Section 4.3. We find that even when top-p% is only 5% and the rank of \(U^u\) and \(U^s\) is 100, the overlapping between safety-critical region and utitliy-critical region is still pretty high.
+          \widehat{W} = UU^\top W\). We compute the similarity between utility matrix \(U^u\) and safety matrix \(U^s\) defined in Section 4.3. We find that even when top-p% is only 5% and the rank of \(U^u\) and \(U^s\) is 100 out of 4096, the overlapping between safety-critical region and utitliy-critical region is still pretty high.
           
           <h3>Isolating Safety-Critical-Only Region From Utility-Critical Region</h3>
           We propose two way of isolating safety-critical region from utility-critical region:
           <ul>
-            <li>On neuron level, we compute the importance score for each neuron using Wanda and SNIP on the safety dataset and the utility dataset. Then we isolate the safety-critical neurons from the utility neurons using set difference.</li>
+            <li>On neuron level, we compute the importance score for each neuron using Wanda and SNIP on the safety dataset and the utility dataset. Then we isolate the safety-critical neurons from the utility neurons using set difference between top-p%-scored utility neurons and top-q%-scored safety neurons: \(S(p,q) =  S^s(q) - S^u(p)\)</li>
             <li>On rank level, we use ActSVD to comptute the low-rank projetion matrix \(\Pi=UU^\top\) for both safety and utility. Then we remove the matrix \(\Delta W(r^u, r^s) = (I-\Pi^u)  \Pi^s  W\), which essentially removes the important ranks of the safety behavior that are <b>orthogonal</b> to the important ranks of the utility behavior. </li>
           </ul>
           <h3>Removing the Isolated Safety-Critical Region will Totally Destroy the Model's Safety while Presering its Utility</h3>
-          We propose two methods to identify and isolate safety-critical and utility-critical regions from two perspectives: neuron level and rank level.
+
+          <img src="./static/images/ASR_vs_acc_7b.png" alt="neuron_result">
+
+          <img src="./static/images/low_rank_diff_7b.png" alt="rank_result">
           
           <p>  However, we notice that <span style="color: darkorange;"><b>open-source LLMs are usually evaluated for alignment using only default generation methods</b></span>. 
           
