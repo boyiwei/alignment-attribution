@@ -195,16 +195,16 @@
               <a href="https://tinghaoxie.com">Tinghao Xie</a>,
             </span>
             <span class="author-block">
-              <a href="https://unispac.github.io">Xiangyu Qi</a>
+              <a href="https://unispac.github.io">Xiangyu Qi</a>,
             </span>
             <span class="author-block">
-              <a href="https://xiamengzhou.github.io">Mengzhou Xia</a>
+              <a href="https://xiamengzhou.github.io">Mengzhou Xia</a>,
             </span>
             <span class="author-block">
-              <a href="https://www.princeton.edu/~pmittal/">Prateek Mittal</a>
+              <a href="https://www.princeton.edu/~pmittal/">Prateek Mittal</a>,
             </span>
             <span class="author-block">
-              <a href="https://mwang.princeton.edu">Mengdi Wang</a>
+              <a href="https://mwang.princeton.edu">Mengdi Wang</a>,
             </span>
             <span class="author-block">
               <a href="https://www.peterhenderson.co">Peter Henderson</a>
@@ -281,10 +281,12 @@
         <div class="content has-text-justified">
           
         
-        <p> The rapid progress in open-source large language models (LLMs) is significantly advancing AI development. Extensive efforts have been made before model release to align their behavior with human values, with the primary goal of ensuring their helpfulness and harmlessness. However, even carefully aligned models can be manipulated maliciously, leading to unintended behaviors, known as "jailbreaks". These jailbreaks are typically triggered by specific text inputs, often referred to as adversarial prompts. In this work, we propose the <span style="color: red;"><b>generation exploitation attack</b></span>, an extremely simple approach that disrupts model alignment by only manipulating variations of decoding methods. 
+        <p> Large language models (LLMs) show inherent brittleness in their safety mechanisms,  as evidenced by their susceptibility to jailbreaking and even non-malicious fine-tuning. In this study, we explore this brittleness of safety alignment by leveraging pruning and low-rank modifications.
           <ul>
-            <li>By exploiting different generation strategies, including varying decoding hyper-parameters and sampling methods, <span style="color: red;"><b>we increase the misalignment rate from 0% to more than 95% across 11 language models</b></span> including LLaMA2, Vicuna, Falcon, and MPT families, outperforming state-of-the-art attacks with </b></span>30x lower computational cost</b></span>.</li>
-            <li><span style="color: green;"><b>We also propose an effective alignment method</b></span> that explores diverse generation strategies, which can reasonably reduce the misalignment rate under our attack. </li>
+            <li><span style="color: green;"><b>We develop methods to identify critical regions that are vital for safety guardrails</b></span>, and that are disentangled from utility-relevant regions at both the neuron and rank levels.</li>
+            <li>Surprisingly, the isolated regions we find are sparse, comprising about <span style="color: rgb(255, 0, 0);"><b>3% at the parameter level</b></span> and <span style="color: rgb(255, 0, 0);"><b>2.5% at the rank level</b></span>. Removing these regions compromises safety without significantly impacting utility, corroborating the inherent brittleness of the model's safety mechanisms.</li>
+            <li>We show that <span style="color:blue"><b>remain vulnerable to low-cost fine-tuning attacks even when modifications to the safety-critical regions are restricted</b></span> . These findings underscore the urgent need for more robust safety strategies in LLMs.</li>
+
           </ul>
            
         </p>
@@ -296,8 +298,7 @@
     <!-- <section class="hero teaser"> -->
       <div class="container is-max-desktop">
         <div class="hero-body">
-    
-          <img src="./static/images/intro.png" alt="teaser">
+          <iframe src="./static/images/main.pdf" width="600" height="500" style="display: block; margin: 0 auto; border:none;"></iframe>
                 Responses to a malicious instruction by <a href="https://huggingface.co/meta-llama/Llama-2-7b-chat-hf">LLaMA2-7B-chat</a> under different
                 generation configurations. In this example, we simply changed p from 0.9 (default) to 0.75 in top-p
                 sampling, which successfully bypasses the safety constraint.        
