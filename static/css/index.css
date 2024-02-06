@@ -1,5 +1,16 @@
 body {
-  font-family: 'Noto Sans', sans-serif;
+  font-family: "Lato", sans-serif;
+}
+
+.fontGrad-bg{
+  /* font-size: 30px; */
+  font-weight: 700;
+  /* background-image: -webkit-linear-gradient(135deg, #c850c0, #47b5d6);
+  background-color: #4158D0; */
+  background-image: -webkit-linear-gradient(135deg, #00DBDE 0%, #FC00FF 100%);
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 

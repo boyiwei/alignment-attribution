@@ -22,7 +22,9 @@
 <!-- End Google Tag Manager -->
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./static/css/bulma.min.css">
   <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
   <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
@@ -180,12 +182,12 @@
     <div class="container is-max-desktop is-centered has-text-centered">
       <h2 class="title is-3", id="disclosure">Overview</h2>
       <div class="content has-text-justified">
-            
+
         <p> Large language models (LLMs) show inherent brittleness in their safety mechanisms,  as evidenced by their susceptibility to jailbreaking and even non-malicious fine-tuning. In this study, we explore this brittleness of safety alignment by leveraging pruning and low-rank modifications.
           <ul>
-            <li><span style="color: green;"><b>We develop methods to identify critical regions that are vital for safety guardrails</b></span>, and that are disentangled from utility-relevant regions at both the neuron and rank levels.</li>
-            <li>Surprisingly, the isolated regions we find are sparse, comprising about <span style="color: rgb(255, 0, 0);"><b>3% at the parameter level</b></span> and <span style="color: rgb(255, 0, 0);"><b>2.5% at the rank level</b></span>. Removing these regions compromises safety without significantly impacting utility, corroborating the inherent brittleness of the model's safety mechanisms.</li>
-            <li>We show that the model <span style="color:blue"><b>remains vulnerable to low-cost fine-tuning attacks even when modifications to the safety-critical regions are restricted</b></span> . These findings underscore the urgent need for more robust safety strategies in LLMs.</li>
+            <li><span class="fontGrad-bg"><b>We develop methods to identify critical regions that are vital for safety guardrails</b></span>, and that are disentangled from utility-relevant regions at both the neuron and rank levels.</li>
+            <li>Surprisingly, the isolated regions we find are sparse, comprising about <span class="fontGrad-bg"><b>3% at the parameter level</b></span> and <span class="fontGrad-bg"><b>2.5% at the rank level</b></span>. Removing these regions compromises safety without significantly impacting utility, corroborating the inherent brittleness of the model's safety mechanisms.</li>
+            <li>We show that the model <span class="fontGrad-bg"><b>remains vulnerable to low-cost fine-tuning attacks even when modifications to the safety-critical regions are restricted</b></span> . These findings underscore the urgent need for more robust safety strategies in LLMs.</li>
 
           </ul>
            
@@ -227,7 +229,7 @@
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container is-max-desktop is-centered has-text-centered">
-      <h2 class="title is-3", id="sparse">Safety-Critical Region is <span style="color: red;">Sparse</span>.<br> Removing the Isolated Safety-Critical Region Destroys Model's Safety while Preserving its Utility</h2>
+      <h2 class="title is-3", id="sparse">Safety-Critical Region is <span class="fontGrad-bg">Sparse</span>.<br> Removing the Isolated Safety-Critical Region Destroys Model's Safety while Preserving its Utility</h2>
       <div class="content has-text-justified">
           <figure>
             <iframe src="./static/images/ASR_vs_acc_7b.html" width="100%" height="300"></iframe>
@@ -238,8 +240,8 @@
           <p>
           The figures above show ASR and accuracy after removing safety-critical regions in LLaMA2-7B-chat-hf identified by: 
           <dl>
-            <dt>(a). Difference pruning methods in neuron level with <b><span style="color: red;">constraint 3%</span></b>.</dt>
-            <dt>(b). Different methods in low rank modifications with <b><span style="color: red;">rank of the weight updates \(\mathrm{rank} (\Delta W)\) less than 100 (out of 4096)</span></b>.</dt>
+            <dt>(a). Difference pruning methods in neuron level with <b><span class="fontGrad-bg">constraint 3%</span></b>.</dt>
+            <dt>(b). Different methods in low rank modifications with <b><span class="fontGrad-bg">rank of the weight updates</span> \(\mathrm{rank} (\Delta W)\) <span class="fontGrad-bg"></span>less than 100 (out of 4096)</span></b>.</dt>
           </dl>
           Among all methods, disentangling safety from utility (set difference for neurons and orthogonal projection for ranks) mostly effectively identify the safety-critical regions, with safety severely compromised while utility retains.
           </p>
@@ -252,7 +254,7 @@
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container is-max-desktop is-centered has-text-centered">
-      <h2 class="title is-3", id="overlap">Safety-Critical Region and Utility-Critical Region are <span style="color: red;">Highly</span> Entangled</h2>
+      <h2 class="title is-3", id="overlap">Safety-Critical Region and Utility-Critical Region are <span class="fontGrad-bg">Highly</span> Entangled</h2>
       
       <div class="content has-text-justified">
           <p>
