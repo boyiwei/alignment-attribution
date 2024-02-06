@@ -283,48 +283,54 @@
     <!-- </section> -->
 
 
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container is-max-desktop is-centered has-text-centered">
-      <h2 class="title is-3", id="Method">Methods: Isolating Safety-Critical and Utility-Critical Regions from Two Perspectives</h2>
-      <div class="container is-max-desktop">
-        <div class="hero-body">
-          We propose two way of isolating safety-critical region from utility-critical region:
-          <ul>
-            <li>On neuron level (Figure (a) below)</li>
-               <ul>
-                <li>Compute the importance score for each neuron using Wanda and SNIP on the safety dataset and the utility dataset. 
-                <li>Isolate the safety-critical neurons from the utility neurons using set difference between top-\(p\%\)-scored utility neurons and top-\(q\%\)-scored safety neurons: \(S(p,q) =  S^s(q) - S^u(p)\)</li>
-               </ul>
-            <li>On rank level (Figure (b) below)
-              <ul>
-                <li>Perform SVD on the safety outputs and the utility outputs to approximate the weight matrix in low rank space (termed as ActSVD): \(U S V^\top  \approx WX_{\mathrm{in}}\),get the projection matrix \(\Pi^u=U^uU^{u\top}, \Pi^s=U^sU^{s\top}\)</li>
-                <li>Remove the matrix \(\Delta W(r^u, r^s) = (I-\Pi^u)  \Pi^s  W\), which essentially removes the important ranks of the safety behavior that are <b>orthogonal</b> to the important ranks of the utility behavior. </li>
-              </ul>
-          </ul>
-          <img src="./static/images/main.png" alt="pipeline">     
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3", id="overview">Methods: Isolating Safety-Critical and Utility-Critical Regions from Two Perspectives</h2>
+        <div class="content has-text-justified">    
+          <p>
+            We propose two way of isolating safety-critical region from utility-critical region:
+            <ul>
+              <li>On neuron level (Figure (a) below)</li>
+                  <ul>
+                  <li>Compute the importance score for each neuron using Wanda and SNIP on the safety dataset and the utility dataset. 
+                  <li>Isolate the safety-critical neurons from the utility neurons using set difference between top-\(p\%\)-scored utility neurons and top-\(q\%\)-scored safety neurons: \(S(p,q) =  S^s(q) - S^u(p)\)</li>
+                  </ul>
+              <li>On rank level (Figure (b) below)
+                <ul>
+                  <li>Perform SVD on the safety outputs and the utility outputs to approximate the weight matrix in low rank space (termed as ActSVD): \(U S V^\top  \approx WX_{\mathrm{in}}\),get the projection matrix \(\Pi^u=U^uU^{u\top}, \Pi^s=U^sU^{s\top}\)</li>
+                  <li>Remove the matrix \(\Delta W(r^u, r^s) = (I-\Pi^u)  \Pi^s  W\), which essentially removes the important ranks of the safety behavior that are <b>orthogonal</b> to the important ranks of the utility behavior. </li>
+                </ul>
+            </ul>
+          </p>
         </div>
+        <img src="./static/images/main.png" alt="pipeline">     
       </div>
     </div>
   </div>
 </section>
 
 
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container is-max-desktop is-centered has-text-centered">
-      <h2 class="title is-3", id="Method">Safety-Critical-Only Region is <span style="color: red;">Sparse</span>. Removing the Isolated Safety-Critical-Only Region will Totally Destroy the Model's Safety while Presering its Utility</h2>
-      <div class="container is-max-desktop">
-        <div class="hero-body">
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3", id="overview">Safety-Critical-Only Region is <span style="color: red;">Sparse</span>. Removing the Isolated Safety-Critical-Only Region will Totally Destroy the Model's Safety while Presering its Utility</h2>
+        <div class="content has-text-justified">   
           <figure>
-            <iframe src="./static/images/ASR_vs_acc_7b.html" width="100%" height="400"></iframe>
+            <iframe src="./static/images/ASR_vs_acc_7b.html" width="100%" height="300"></iframe>
             <figcaption>(a) Neuron Level</figcaption>
-            <iframe src="./static/images/low_rank_diff_7b.html" width="100%" height="400"></iframe>
+            <iframe src="./static/images/low_rank_diff_7b.html" width="100%" height="300"></iframe>
             <figcaption>(b) Rank Level</figcaption>
           </figure>
-
+          <p>
           The figures above show ASR and accuracy after removing safety-critical regions in LLaMA2-7B-chat-hf identified by: <b>(a).</b> Difference pruning methods in neuron level with <b><span style="color: red;">constraint 3%</span></b>. 
           <b>(b).</b> Different methods in low rank modifications with <b><span style="color: red;">rank of the weight updates \(\mathrm{rank} (\Delta W)\) less than 100 (out of 4096)</span></b>. Among all methods, disentangling safety from utility (set difference for neurons and orthogonal projection for ranks) mostly effectively identify the safety-critical regions, with safety severely compromised while utility retains.
+          </p>
         </div>
       </div>
     </div>
@@ -333,12 +339,14 @@
 
 
 
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container is-max-desktop is-centered has-text-centered">
-      <h2 class="title is-3", id="Method">Safety-Critical Region and Utility-Critical Region are <span style="color: red;">Highly</span> Entangled</h2>
-      <div class="container is-max-desktop">
-        <div class="hero-body">
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3", id="overview">Safety-Critical Region and Utility-Critical Region are <span style="color: red;">Highly</span> Entangled</h2>
+        <div class="content has-text-justified">   
+          <p>
           <ul>
             <li> On neuron level</li>
               <ul>
@@ -351,12 +359,13 @@
               <li>Compute the subspace similarity mentioned in Section 4.3</li>
             </ul> 
           </ul>
+          </p>
             <figure>
             <!-- <img src="./static/images/jaccard_index_wandg_0.01_barplot.png" alt="neuron_result">
             -->
-            <iframe src="./static/images/Jaccard_Index_0.05_16.html" width="100%" height="300"></iframe>
+            <iframe src="./static/images/Jaccard_Index_0.05_16.html" width="100%" height="600"></iframe>
             <figcaption>(a) Neuron Level</figcaption>
-            <iframe src="./static/images/subspace_similarity_100.html" width="100%" height="300"></iframe>
+            <iframe src="./static/images/subspace_similarity_100.html" width="100%" height="600"></iframe>
             <figcaption>(b) Rank Level</figcaption>
           </figure>
         </div>
@@ -366,13 +375,13 @@
 </section>
 
 
-
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container is-max-desktop is-centered has-text-centered">
-      <h2 class="title is-3", id="Method">Freezing Safety-Critical Neurons Does Not Stop Fine-Tuning Attack</h2>
-      <div class="container is-max-desktop">
-        <div class="hero-body">
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3", id="overview">Freezing Safety-Critical Neurons Does Not Stop Fine-Tuning Attack</h2>
+        <div class="content has-text-justified">   
           <p>
             We explore whether the identified safety-critical neurons could mitigate the fine-tuning attack.
             Following <a href="https://arxiv.org/pdf/2310.03693.pdf">Qi et al.</a>'s experimental setup, we fine-tune LLaMA2-7B-chat-hf with varying numbers of examples \(n\) from the Alpaca dataset. During fine-tuning, we freeze the top-\(q\%\) of safety neurons and observe their effect on preserving safety. 
