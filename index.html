@@ -280,13 +280,6 @@
     </div>
     <!--/ Abstract. -->
 
-    <!-- <section class="hero teaser"> -->
-      <div class="container is-max-desktop">
-        <div class="hero-body">
-          <img src="./static/images/main.png" alt="pipeline">
-          The proposed pipelines for identifying and isolating safety-critical regions of LLM weights at (a) neuron level and (b) rank level. <b>(a).</b> We identify the top safety neurons and the top utility neurons by computing per-neuron importance scores on the safety dataset and the utility dataset. Next, we isolate the safety-critical neurons from the utility neurons using set difference.  <b>(b).</b> We identify the top safety ranks and the top utility ranks by performing SVD on the safety outputs and the utility outputs (termed ActSVD). Next, we isolate the safety-critical ranks using orthogonal projection.     
-        </div>
-      </div>
     <!-- </section> -->
 
 
@@ -294,41 +287,15 @@
   <div class="hero-body">
     <div class="container is-max-desktop is-centered has-text-centered">
       <h2 class="title is-3", id="Method">Methods: Isolating Safety-Critical and Utility-Critical Regions from Two Perspectives</h2>
-      <div class="content has-text-justified">
-        <p>
-          <h4>Safety-Critical Region and Utility-Critical Region are <span style="color: red;">Highly</span> Entangled</h4>
-          On neuron level, we compute the importance score for each neuron using Wanda (<a href="https://arxiv.org/pdf/2306.11695.pdf">Sun et al.</a>) and SNIP (<a href="https://arxiv.org/pdf/1810.02340.pdf">Lee et al.</a>) on the safety dataset and the utility dataset. Then compute the jaccard index \(J=|A\cup B|/|A\cap B|\) between top-\(p\%\) scored utility neurons and top-\(p\%\) scored safety neurons. 
-          On Rank level, we perform SVD on the safety outputs and the utility outputs to approximate the weight matrix in low rank space (termed as ActSVD): \(U S V^\top  \approx WX_{\mathrm{in}},\   
-          \widehat{W} = UU^\top W\). We compute the similarity between utility matrix \(U^u\) and safety matrix \(U^s\) defined in Section 4.3. We find that even when top-\(p\%\) is only 5% and the rank of \(U^u\) and \(U^s\) is 100 out of 4096, the overlapping between safety-critical region and utitliy-critical region is still pretty high, as shown in the figures below.
-            <figure>
-            <!-- <img src="./static/images/jaccard_index_wandg_0.01_barplot.png" alt="neuron_result">
-             -->
-            <iframe src="./static/images/Jaccard_Index_0.05_16.html" width="100%" height="400"></iframe>
-            <figcaption>(a) Neuron Level</figcaption>
-            <iframe src="./static/images/subspace_similarity_100.html" width="100%" height="400"></iframe>
-            <figcaption>(b) Rank Level</figcaption>
-          </figure>
-          
-
-
-          <h4>Isolating Safety-Critical-Only Region From Utility-Critical Region</h4>
+      <div class="container is-max-desktop">
+        <div class="hero-body">
           We propose two way of isolating safety-critical region from utility-critical region:
           <ul>
-            <li>On neuron level, we compute the importance score for each neuron using Wanda and SNIP on the safety dataset and the utility dataset. Then we isolate the safety-critical neurons from the utility neurons using set difference between top-\(p\%\)-scored utility neurons and top-\(q\%\)-scored safety neurons: \(S(p,q) =  S^s(q) - S^u(p)\)</li>
-            <li>On rank level, we use ActSVD to comptute the low-rank projetion matrix \(\Pi=UU^\top\) for both safety and utility. Then we remove the matrix \(\Delta W(r^u, r^s) = (I-\Pi^u)  \Pi^s  W\), which essentially removes the important ranks of the safety behavior that are <b>orthogonal</b> to the important ranks of the utility behavior. </li>
+            <li>On neuron level (Figure (a) below), we compute the importance score for each neuron using Wanda and SNIP on the safety dataset and the utility dataset. Then we isolate the safety-critical neurons from the utility neurons using set difference between top-\(p\%\)-scored utility neurons and top-\(q\%\)-scored safety neurons: \(S(p,q) =  S^s(q) - S^u(p)\)</li>
+            <li>On rank level (Figure (b) below), we use ActSVD to comptute the low-rank projetion matrix \(\Pi=UU^\top\) for both safety and utility. Then we remove the matrix \(\Delta W(r^u, r^s) = (I-\Pi^u)  \Pi^s  W\), which essentially removes the important ranks of the safety behavior that are <b>orthogonal</b> to the important ranks of the utility behavior. </li>
           </ul>
-          <h4>Safety-Critical-Only Region is <span style="color: red;">Sparse</span>. Removing the Isolated Safety-Critical-Only Region will Totally Destroy the Model's Safety while Presering its Utility</h4>
-
-          <figure>
-            <iframe src="./static/images/ASR_vs_acc_7b.html" width="100%" height="400"></iframe>
-            <figcaption>(a) Neuron Level</figcaption>
-            <iframe src="./static/images/low_rank_diff_7b.html" width="100%" height="400"></iframe>
-            <figcaption>(b) Rank Level</figcaption>
-          </figure>
-
-          The figures above show ASR and accuracy after removing safety-critical regions in LLaMA2-7B-chat-hf identified by: <b>(a).</b> Difference pruning methods in neuron level with <b><span style="color: red;">constraint 3%</span></b>. 
-          <b>(b).</b> Different methods in low rank modifications with <b><span style="color: red;">rank of the weight updates \(\mathrm{rank} (\Delta W)\) less than 100 (out of 4096)</span></b>. Among all methods, disentangling safety from utility (set difference for neurons and orthogonal projection for ranks) mostly effectively identify the safety-critical regions, with safety severely compromised while utility retains.
-          
+          <img src="./static/images/main.png" alt="pipeline">     
+        </div>
       </div>
     </div>
   </div>
@@ -336,10 +303,44 @@
 
 
 <section class="hero is-small">
-  <div class="hero-body">
-    <div class="container is-max-desktop is-centered has-text-centered">
-      <h2 class="title is-3", id="attack">Freezing Safety-Critical Neurons Does Not Stop Fine-Tuning Attacks</h2>
-      <div class="content has-text-justified">
+  <h2>Safety-Critical-Only Region is <span style="color: red;">Sparse</span>. Removing the Isolated Safety-Critical-Only Region will Totally Destroy the Model's Safety while Presering its Utility</h2>
+
+  <figure>
+    <iframe src="./static/images/ASR_vs_acc_7b.html" width="100%" height="400"></iframe>
+    <figcaption>(a) Neuron Level</figcaption>
+    <iframe src="./static/images/low_rank_diff_7b.html" width="100%" height="400"></iframe>
+    <figcaption>(b) Rank Level</figcaption>
+  </figure>
+
+  The figures above show ASR and accuracy after removing safety-critical regions in LLaMA2-7B-chat-hf identified by: <b>(a).</b> Difference pruning methods in neuron level with <b><span style="color: red;">constraint 3%</span></b>. 
+  <b>(b).</b> Different methods in low rank modifications with <b><span style="color: red;">rank of the weight updates \(\mathrm{rank} (\Delta W)\) less than 100 (out of 4096)</span></b>. Among all methods, disentangling safety from utility (set difference for neurons and orthogonal projection for ranks) mostly effectively identify the safety-critical regions, with safety severely compromised while utility retains.
+</section>
+
+
+<section class="hero is-small">
+<div class="content has-text-justified">
+  <p>
+    <h2>Safety-Critical Region and Utility-Critical Region are <span style="color: red;">Highly</span> Entangled</h2>
+    On neuron level, we compute the importance score for each neuron using Wanda (<a href="https://arxiv.org/pdf/2306.11695.pdf">Sun et al.</a>) and SNIP (<a href="https://arxiv.org/pdf/1810.02340.pdf">Lee et al.</a>) on the safety dataset and the utility dataset. Then compute the jaccard index \(J=|A\cup B|/|A\cap B|\) between top-\(p\%\) scored utility neurons and top-\(p\%\) scored safety neurons. 
+    On Rank level, we perform SVD on the safety outputs and the utility outputs to approximate the weight matrix in low rank space (termed as ActSVD): \(U S V^\top  \approx WX_{\mathrm{in}},\   
+    \widehat{W} = UU^\top W\). We compute the similarity between utility matrix \(U^u\) and safety matrix \(U^s\) defined in Section 4.3. We find that even when top-\(p\%\) is only 5% and the rank of \(U^u\) and \(U^s\) is 100 out of 4096, the overlapping between safety-critical region and utitliy-critical region is still pretty high, as shown in the figures below.
+      <figure>
+      <!-- <img src="./static/images/jaccard_index_wandg_0.01_barplot.png" alt="neuron_result">
+       -->
+      <iframe src="./static/images/Jaccard_Index_0.05_16.html" width="100%" height="300"></iframe>
+      <figcaption>(a) Neuron Level</figcaption>
+      <iframe src="./static/images/subspace_similarity_100.html" width="100%" height="300"></iframe>
+      <figcaption>(b) Rank Level</figcaption>
+    </figure>
+
+</div>
+</section>
+
+
+<section class="hero is-small">
+  <div class="container is-max-desktop is-centered has-text-centered">
+    <h2 class="title is-3", id="Method">Freezing Safety-Critical Neurons Does Not Stop Fine-Tuning Attacks</h2>
+    <div class="container is-max-desktop">
         <p>
           We explore whether the identified safety-critical neurons could mitigate the fine-tuning attack.
           Following <a href="https://arxiv.org/pdf/2310.03693.pdf">Qi et al.</a>'s experimental setup, we fine-tune LLaMA2-7B-chat-hf with varying numbers of examples \(n\) from the Alpaca dataset. During fine-tuning, we freeze the top-\(q\%\) of safety neurons and observe their effect on preserving safety. 
