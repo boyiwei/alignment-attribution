@@ -256,16 +256,12 @@
 
 
 
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <!-- Abstract. -->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3", id="overview">Overview</h2>
-        <div class="content has-text-justified">
-          
-        
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop is-centered has-text-centered">
+      <h2 class="title is-3", id="disclosure">Overview</h2>
+      <div class="content has-text-justified">
+            
         <p> Large language models (LLMs) show inherent brittleness in their safety mechanisms,  as evidenced by their susceptibility to jailbreaking and even non-malicious fine-tuning. In this study, we explore this brittleness of safety alignment by leveraging pruning and low-rank modifications.
           <ul>
             <li><span style="color: green;"><b>We develop methods to identify critical regions that are vital for safety guardrails</b></span>, and that are disentangled from utility-relevant regions at both the neuron and rank levels.</li>
@@ -353,7 +349,7 @@
             <figure>
             <!-- <img src="./static/images/jaccard_index_wandg_0.01_barplot.png" alt="neuron_result">
             -->
-            <iframe src="./static/images/Jaccard_Index_0.05_16.html" width="100%" height="400"></iframe>
+            <iframe src=".static/images/jaccard_index_wandg_0.05_barplot.html" width="100%" height="400"></iframe>
             <figcaption>(a) Neuron Level</figcaption>
             <iframe src="./static/images/subspace_similarity_100.html" width="100%" height="400"></iframe>
             <figcaption>(b) Rank Level</figcaption>
