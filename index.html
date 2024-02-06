@@ -209,7 +209,7 @@
             <ul>
               <li><b>On neuron level</b> (Figure (a) below)</li>
                   <ul>
-                  <li>Compute the importance score for each neuron using Wanda and SNIP on the safety dataset and the utility dataset. 
+                  <li>Compute the importance score for each neuron using Wanda (<a href="https://arxiv.org/pdf/2306.11695.pdf">Sun et al.</a>) and SNIP (<a href="https://arxiv.org/pdf/1810.02340.pdf">Lee et al.</a>) on the safety dataset and the utility dataset. 
                   <li>Isolate the safety-critical neurons from the utility neurons using set difference between top-\(p\%\)-scored utility neurons and top-\(q\%\)-scored safety neurons: \(S(p,q) =  S^s(q) - S^u(p)\)</li>
                   </ul>
               <li><b>On rank level</b> (Figure (b) below)
@@ -263,7 +263,7 @@
           <ul>
             <li>  <b>On neuron level</b></li>
               <ul>
-                <li>Compute the importance score for each neuron using Wanda (<a href="https://arxiv.org/pdf/2306.11695.pdf">Sun et al.</a>) and SNIP (<a href="https://arxiv.org/pdf/1810.02340.pdf">Lee et al.</a>) on the safety dataset and the utility dataset. 
+                <li>Compute the importance score for each neuron using Wanda and SNIP on the safety dataset and the utility dataset. 
                 <li>Compute the Jaccard index \(J=|A\cup B|/|A\cap B|\) between top-\(p\%\) scored utility neurons and top-\(p\%\) scored safety neurons. (Top 5% in Figure (a) below) </li>
               </ul>
             <li> <b>On rank level</b></li>
