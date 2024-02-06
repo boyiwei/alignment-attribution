@@ -291,8 +291,16 @@
         <div class="hero-body">
           We propose two way of isolating safety-critical region from utility-critical region:
           <ul>
-            <li>On neuron level (Figure (a) below), we compute the importance score for each neuron using Wanda and SNIP on the safety dataset and the utility dataset. Then we isolate the safety-critical neurons from the utility neurons using set difference between top-\(p\%\)-scored utility neurons and top-\(q\%\)-scored safety neurons: \(S(p,q) =  S^s(q) - S^u(p)\)</li>
-            <li>On rank level (Figure (b) below), we use ActSVD to comptute the low-rank projetion matrix \(\Pi=UU^\top\) for both safety and utility. Then we remove the matrix \(\Delta W(r^u, r^s) = (I-\Pi^u)  \Pi^s  W\), which essentially removes the important ranks of the safety behavior that are <b>orthogonal</b> to the important ranks of the utility behavior. </li>
+            <li>On neuron level (Figure (a) below)</li>
+               <ul>
+                <li>Compute the importance score for each neuron using Wanda and SNIP on the safety dataset and the utility dataset. 
+                <li>Isolate the safety-critical neurons from the utility neurons using set difference between top-\(p\%\)-scored utility neurons and top-\(q\%\)-scored safety neurons: \(S(p,q) =  S^s(q) - S^u(p)\)</li>
+               </ul>
+            <li>On rank level (Figure (b) below)
+              <ul>
+                <li>Perform SVD on the safety outputs and the utility outputs to approximate the weight matrix in low rank space (termed as ActSVD): \(U S V^\top  \approx WX_{\mathrm{in}}\),get the projection matrix \(\Pi^u=U^uU^{u\top}, \Pi^s=U^sU^{s\top}\)</li>
+                <li>Remove the matrix \(\Delta W(r^u, r^s) = (I-\Pi^u)  \Pi^s  W\), which essentially removes the important ranks of the safety behavior that are <b>orthogonal</b> to the important ranks of the utility behavior. </li>
+              </ul>
           </ul>
           <img src="./static/images/main.png" alt="pipeline">     
         </div>
@@ -321,9 +329,18 @@
 <div class="content has-text-justified">
   <p>
     <h2>Safety-Critical Region and Utility-Critical Region are <span style="color: red;">Highly</span> Entangled</h2>
-    On neuron level, we compute the importance score for each neuron using Wanda (<a href="https://arxiv.org/pdf/2306.11695.pdf">Sun et al.</a>) and SNIP (<a href="https://arxiv.org/pdf/1810.02340.pdf">Lee et al.</a>) on the safety dataset and the utility dataset. Then compute the jaccard index \(J=|A\cup B|/|A\cap B|\) between top-\(p\%\) scored utility neurons and top-\(p\%\) scored safety neurons. 
-    On Rank level, we perform SVD on the safety outputs and the utility outputs to approximate the weight matrix in low rank space (termed as ActSVD): \(U S V^\top  \approx WX_{\mathrm{in}},\   
-    \widehat{W} = UU^\top W\). We compute the similarity between utility matrix \(U^u\) and safety matrix \(U^s\) defined in Section 4.3. We find that even when top-\(p\%\) is only 5% and the rank of \(U^u\) and \(U^s\) is 100 out of 4096, the overlapping between safety-critical region and utitliy-critical region is still pretty high, as shown in the figures below.
+    <ul>
+      <li> On neuron level</li>
+        <ul>
+          <li>Compute the importance score for each neuron using Wanda (<a href="https://arxiv.org/pdf/2306.11695.pdf">Sun et al.</a>) and SNIP (<a href="https://arxiv.org/pdf/1810.02340.pdf">Lee et al.</a>) on the safety dataset and the utility dataset. 
+          <li>Compute the Jaccard Index \(J=|A\cup B|/|A\cap B|\) between top-\(p\%\) scored utility neurons and top-\(p\%\) scored safety neurons. </li>
+        </ul>
+      <li> On rank level</li>
+      <ul>
+        <li>Use ActSVD to identify \(U^u, U^s\)</li>
+        <li>Compute the subspace similarity mentioned in Section 4.3</li>
+      </ul> 
+    </ul>
       <figure>
       <!-- <img src="./static/images/jaccard_index_wandg_0.01_barplot.png" alt="neuron_result">
        -->
@@ -344,10 +361,13 @@
         <p>
           We explore whether the identified safety-critical neurons could mitigate the fine-tuning attack.
           Following <a href="https://arxiv.org/pdf/2310.03693.pdf">Qi et al.</a>'s experimental setup, we fine-tune LLaMA2-7B-chat-hf with varying numbers of examples \(n\) from the Alpaca dataset. During fine-tuning, we freeze the top-\(q\%\) of safety neurons and observe their effect on preserving safety. 
+        </p>
+        <p>
           We find that effective counteraction of the attack occurs only with \(n=10\) and freezing over 50% of neurons.  
           This observation aligns with <a href="https://arxiv.org/pdf/2401.01967.pdf">Lee et al.</a>'s hypothesis that fine-tuning attacks may create alternative pathways in the original model. 
           Given that safety-critical neurons are sparse, these new routes could bypass the existing safety mechanisms easily, and therefore we need more robust defenses against fine-tuning attacks.
-        </p> 
+        </p>
+
 
       </div>
     </div>
