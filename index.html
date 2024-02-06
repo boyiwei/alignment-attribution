@@ -240,8 +240,8 @@
           <p>
           The figures above show ASR and accuracy after removing safety-critical regions in LLaMA2-7B-chat-hf identified by: 
           <dl>
-            <dt>(a). Difference pruning methods in neuron level with <b><span class="fontGrad-bg">constraint 3%</span></b>.</dt>
-            <dt>(b). Different methods in low rank modifications with <b><span class="fontGrad-bg">rank of the weight updates</span> \(\mathrm{rank} (\Delta W)\) <span class="fontGrad-bg"></span>less than 100 (out of 4096)</span></b>.</dt>
+            <dt>(a). Different pruning methods in neuron level with <b><span class="fontGrad-bg">constraint 3%</span></b>.</dt>
+            <dt>(b). Different methods in low rank modifications with <b><span class="fontGrad-bg">rank of the weight updates</span> \(\mathrm{rank} (\Delta W)\) <span class="fontGrad-bg">less than 100 (out of 4096)</span></b>.</dt>
           </dl>
           Among all methods, disentangling safety from utility (set difference for neurons and orthogonal projection for ranks) mostly effectively identify the safety-critical regions, with safety severely compromised while utility retains.
           </p>
