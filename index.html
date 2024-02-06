@@ -285,7 +285,7 @@
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container is-max-desktop is-centered has-text-centered">
-      <h2 class="title is-3", id="disclosure">Methods: Isolating Safety-Critical and Utility-Critical Regions from Two Perspectives</h2>
+      <h2 class="title is-3", id="disclosure">Methods: Isolating Safety-Important and Utility-Important Regions from Two Perspectives</h2>
       <div class="content has-text-justified">
           <p>
             We propose two way of isolating safety-critical region from utility-critical region:
@@ -312,7 +312,7 @@
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container is-max-desktop is-centered has-text-centered">
-      <h2 class="title is-3", id="disclosure">Safety-Critical-Only Region is <span style="color: red;">Sparse</span>. Removing the Isolated Safety-Critical-Only Region will Totally Destroy the Model's Safety while Presering its Utility</h2>
+      <h2 class="title is-3", id="disclosure">Safety-Critical Region is <span style="color: red;">Sparse</span>.<br> Removing the Isolated Safety-Critical Region will Totally Destroy the Model's Safety while Presering its Utility</h2>
       <div class="content has-text-justified">
           <figure>
             <iframe src="./static/images/ASR_vs_acc_7b.html" width="100%" height="300"></iframe>
@@ -321,8 +321,12 @@
             <figcaption>(b) Rank Level</figcaption>
           </figure>
           <p>
-          The figures above show ASR and accuracy after removing safety-critical regions in LLaMA2-7B-chat-hf identified by: <b>(a).</b> Difference pruning methods in neuron level with <b><span style="color: red;">constraint 3%</span></b>. 
-          <b>(b).</b> Different methods in low rank modifications with <b><span style="color: red;">rank of the weight updates \(\mathrm{rank} (\Delta W)\) less than 100 (out of 4096)</span></b>. Among all methods, disentangling safety from utility (set difference for neurons and orthogonal projection for ranks) mostly effectively identify the safety-critical regions, with safety severely compromised while utility retains.
+          The figures above show ASR and accuracy after removing safety-critical regions in LLaMA2-7B-chat-hf identified by: 
+          <dl>
+            <dt>(a). Difference pruning methods in neuron level with <b><span style="color: red;">constraint 3%</span></b>.</dt>
+            <dt>(b). Different methods in low rank modifications with <b><span style="color: red;">rank of the weight updates \(\mathrm{rank} (\Delta W)\) less than 100 (out of 4096)</span></b>.</dt>
+          </dl>
+          Among all methods, disentangling safety from utility (set difference for neurons and orthogonal projection for ranks) mostly effectively identify the safety-critical regions, with safety severely compromised while utility retains.
           </p>
         </div>
       </div>
@@ -337,15 +341,16 @@
       
       <div class="content has-text-justified">
           <p>
+            Methods in computing the overlap between safety-critical region and utility-critical region:
           <ul>
             <li> On neuron level</li>
               <ul>
                 <li>Compute the importance score for each neuron using Wanda (<a href="https://arxiv.org/pdf/2306.11695.pdf">Sun et al.</a>) and SNIP (<a href="https://arxiv.org/pdf/1810.02340.pdf">Lee et al.</a>) on the safety dataset and the utility dataset. 
-                <li>Compute the Jaccard Index \(J=|A\cup B|/|A\cap B|\) between top-\(p\%\) scored utility neurons and top-\(p\%\) scored safety neurons. </li>
+                <li>Compute the Jaccard Index \(J=|A\cup B|/|A\cap B|\) between top-\(p\%\) scored utility neurons and top-\(p\%\) scored safety neurons. (Top 5% in Figure (a) below) </li>
               </ul>
             <li> On rank level</li>
             <ul>
-              <li>Use ActSVD to identify \(U^u, U^s\)</li>
+              <li>Use ActSVD to identify \(\mathrm{rank}\)-\(r\) \(U^u, U^s\) (Rank-100 in the Figure (b) below.)</li>
               <li>Compute the subspace similarity mentioned in Section 4.3</li>
             </ul> 
           </ul>
@@ -353,11 +358,14 @@
             <figure>
             <!-- <img src="./static/images/jaccard_index_wandg_0.01_barplot.png" alt="neuron_result">
             -->
-            <iframe src="./static/images/jaccard_index_wandg_0.05_barplot.html" width="100%" height="400"></iframe>
+            <iframe src="./static/images/jaccard_index_wandg_0.05_barplot.html" width="100%" height="350"></iframe>
             <figcaption>(a) Neuron Level</figcaption>
-            <iframe src="./static/images/subspace_similarity_100.html" width="100%" height="400"></iframe>
+            <iframe src="./static/images/subspace_similarity_100.html" width="100%" height="350"></iframe>
             <figcaption>(b) Rank Level</figcaption>
           </figure>
+          <p>
+            The observed spikes in Jaccard Indices and Subspace Similarities indicate large overlaps between safety and utility neurons within certain layers of the model
+          </p>
         </div>
       </div>
   </div>
