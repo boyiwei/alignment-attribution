@@ -55,6 +55,9 @@
         <a class="navbar-item" href="#overview">
           Overview
         </a>
+        <a class="navbar-item" href="#motivation">
+          Motivation
+        </a>
           <a class="navbar-item" href="#methods">
             Methods
           </a>
@@ -188,6 +191,24 @@
     <!--/ Abstract. -->
 
     <!-- </section> -->
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop is-centered has-text-centered">
+      <h2 class="title is-3", id="motivation">Motivation</h2>
+      <div class="content has-text-justified">
+          <p>
+            Addressing failure cases in the alignment of LLMs requires a deep understanding of why their safety mechanisms are fragile. Our study aims to contribute to this understanding via <span style="font-style: italic;">weight attribution</span> --- the process of linking safe behaviors to specific regions within the model's weights.
+            However, a key challenge here is the intricate overlap between <span style="font-style: italic;">safety</span> mechanisms and the model's general capabilities, or <span style="font-style: italic;">utility</span>. 
+            For instance, responsibly handling a harmful instruction for illegal actions entails understanding the instruction, recognizing its harmful intent, and declining it appropriately, which requires a blend of safety awareness and utility capability. We aim to identify minimal safety-critical links within the model that, if disrupted, could compromise its safety without significantly
+            impacting its utility. If there are few such links, it may help explain why safety mechanisms remain
+            brittle and why low-cost fine-tuning attacks have been so successful.
+          </p>
+        </div>
+      </div>
+  </div>
+</section>
+
 
 <section class="hero is-small">
   <div class="hero-body">
